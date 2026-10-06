@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض المزايا والحلول - تطوير المنصة الرقمية للمدرسة</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        },
+                        neon: {
+                            cyan: '#06b6d4',
+                            emerald: '#10b981',
+                            purple: '#a855f7',
+                            amber: '#f59e0b'
+                        },
+                        darkbg: '#0B0F17',
+                        glass: 'rgba(17, 24, 39, 0.7)'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Segoe UI', 'Tahoma', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #0B0F17;
+            color: #E5E7EB;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-card {
+            background: rgba(31, 41, 55, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px -10px rgba(99, 102, 241, 0.3);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
+        }
+
+        .glow-cyan {
+            text-shadow: 0 0 12px rgba(6, 182, 212, 0.6);
+        }
+
+        .gradient-border {
+            position: relative;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.05));
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1F2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/3 -left-40 w-96 h-96 bg-neon-cyan/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-40 right-1/4 w-96 h-96 bg-neon-purple/10 rounded-full blur-3xl"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f293710_1px,transparent_1px),linear-gradient(to_bottom,#1f293710_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+    </div>
+
+    <div class="relative z-10 flex-grow">
+        <header class="sticky top-0 z-50 glass-panel border-b border-gray-800/60">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-neon-cyan flex items-center justify-center text-white shadow-lg shadow-brand-500/20">
+                        <i class="fa-solid fa-graduation-cap text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg text-white block leading-none">مستقبل المدرسة الرقمي</span>
+                        <span class="text-xs text-gray-400">عرض الفكرة التقنية والحلول البرمجية</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden lg:flex items-center space-x-1 space-x-reverse bg-gray-900/60 p-1.5 rounded-xl border border-gray-800">
+                    <button onclick="switchTab('attract')" id="tab-attract" class="nav-btn active px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-white bg-brand-600 shadow-md">
+                        <i class="fa-solid fa-rocket ml-2 text-neon-cyan"></i>جذب الطلاب والتسجيل
+                    </button>
+                    <button onclick="switchTab('management')" id="tab-management" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-gray-400 hover:text-white hover:bg-gray-800/50">
+                        <i class="fa-solid fa-clock-rotate-left ml-2 text-neon-emerald"></i>الإدارة وتوفير الوقت
+                    </button>
+                    <button onclick="switchTab('portal')" id="tab-portal" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-gray-400 hover:text-white hover:bg-gray-800/50">
+                        <i class="fa-solid fa-user-graduate ml-2 text-neon-purple"></i>بوابة الطلاب والوالدين
+                    </button>
+                    <button onclick="switchTab('comparison')" id="tab-comparison" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-gray-400 hover:text-white hover:bg-gray-800/50">
+                        <i class="fa-solid fa-scale-balanced ml-2 text-neon-amber"></i>المشاكل والحلول
+                    </button>
+                    <button onclick="switchTab('plan')" id="tab-plan" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-gray-400 hover:text-white hover:bg-gray-800/50">
+                        <i class="fa-solid fa-list-check ml-2 text-brand-500"></i>خطة التنفيذ والعرض
+                    </button>
+                </nav>
+
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <a href="https://mohammed-hindi.github.io/portfolio" target="_blank" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white px-3 py-2 rounded-lg border border-gray-700 transition flex items-center">
+                        <i class="fa-solid fa-briefcase ml-2 text-brand-500"></i>معرض أعمال المطور
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mobile Nav Bar Below -->
+            <div class="lg:hidden overflow-x-auto py-2 px-4 flex space-x-2 space-x-reverse border-t border-gray-800 scrollbar-none">
+                <button onclick="switchTab('attract')" id="mob-tab-attract" class="mob-nav-btn active whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-brand-600">الجذب والتسجيل</button>
+                <button onclick="switchTab('management')" id="mob-tab-management" class="mob-nav-btn whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 bg-gray-800">الإدارة وتوفير الوقت</button>
+                <button onclick="switchTab('portal')" id="mob-tab-portal" class="mob-nav-btn whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 bg-gray-800">البوابة والوالدين</button>
+                <button onclick="switchTab('comparison')" id="mob-tab-comparison" class="mob-nav-btn whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 bg-gray-800">جدول المقارنة</button>
+                <button onclick="switchTab('plan')" id="mob-tab-plan" class="mob-nav-btn whitespace-nowrap px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 bg-gray-800">خطة التنفيذ</button>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="gradient-border p-6 sm:p-10 mb-10 text-center relative overflow-hidden glass-panel">
+                <div class="inline-flex items-center space-x-2 space-x-reverse px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-500 text-xs font-semibold mb-4">
+                    <span class="flex h-2 w-2 rounded-full bg-brand-500 animate-ping"></span>
+                    <span>رؤية تطويرية شاملة للمؤسسة التعليمية</span>
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4 leading-tight">
+                    تحويل موقع المدرسة إلى <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan via-brand-500 to-neon-purple glow-text">أداة تسويقية وإدارية متكاملة</span>
+                </h1>
+                <p class="max-w-3xl mx-auto text-gray-300 text-base sm:text-lg leading-relaxed">
+                    الموقع الحديث ليس مجرد صفحة تعريفية؛ بل هو استثمار إستراتيجي لزيادة عدد الطلاب الجدد، رفع كفاءة الكادر الإداري، وتقديم تجربة تفاعلية تليق بمكانة المدرسه وحداثتها.
+                </p>
+            </div>
+
+            <div id="content-attract" class="tab-content transition-all duration-300">
+                <div class="mb-6 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white flex items-center">
+                            <i class="fa-solid fa-rocket text-neon-cyan ml-3"></i>
+                            1) جذب الطلاب وزيادة نسب التسجيل
+                        </h2>
+                        <p class="text-gray-400 text-sm mt-1">كيف يساعد الموقع في إقناع أولياء الأمور الجدد باختيار مدرستكم دون غيرها</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                        <div class="w-12 h-12 rounded-xl bg-neon-cyan/10 border border-neon-cyan/30 text-neon-cyan flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-id-card"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">نظام التسجيل والقبول الإلكتروني</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                            يتيح لأولياء الأمور تقديم طلبات الالتحاق ورفع المستندات المطلوبة أونلاين بكل سهولة دون الحاجة للقدوم للمدرسة وتعبئة الأوراق اليدوية.
+                        </p>
+                        <ul class="space-y-2 text-xs text-gray-400 border-t border-gray-800 pt-3">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-neon-emerald ml-2"></i>تأكيد فوري للطلب عبر الإيميل/الواتساب</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-neon-emerald ml-2"></i>رفع شهادات الطالب والصور إلكترونياً</li>
+                        </ul>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                        <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/30 text-brand-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-vr-cardboard"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">جولة افتراضية ومعرض إمكانيات المدرسة</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                            عرض الملاعب، المختبرات، القاعات الدراسية، والأنشطة باستخدام الصور عالية الجودة أو الجولات التفاعلية لإعطاء انطباع مبهر ولياقة بصرية.
+                        </p>
+                        <ul class="space-y-2 text-xs text-gray-400 border-t border-gray-800 pt-3">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-neon-emerald ml-2"></i>استعراض ممتلكات المدرسة والأجهزة الحديثة</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-neon-emerald ml-2"></i>بناء الثقة المبكرة لدى ولي الأمر قبل الزيارة</li>
+                        </ul>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                        <div class="w-12 h-12 rounded-xl bg-neon-purple/10 border border-neon-purple/30 text-neon-purple flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">عرض الأنشطة والنتائج وتكريم المتفوقين</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                            قسم متجدد يعرض إنجازات الطلاب، نسب النجاح في الثانوية، الجوائز المدرسية، والمقالات والإبداعات الطلابية بشكل مستمر.
+                        </p>
+                        <ul class="space-y-2 text-xs text-gray-400 border-t border-gray-800 pt-3">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-neon-emerald ml-2"></i>لوحة شرف إلكترونية للمتفوقين شهرياً</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-neon-emerald ml-2"></i>مشاركة فعاليات الرحلات والمنافسات الرياضية</li>
+                        </ul>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                        <div class="w-12 h-12 rounded-xl bg-neon-amber/10 border border-neon-amber/30 text-neon-amber flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">الظهور في نتائج بحث جوجل (SEO)</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                            تهيئة الموقع برمجياً لتصدر نتائج البحث عندما يبحث الأهالي عن "أفضل مدارس في المنطقة" أو "تسجيل أطفال في مدرسة متميزة".
+                        </p>
+                        <ul class="space-y-2 text-xs text-gray-400 border-t border-gray-800 pt-3">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-neon-emerald ml-2"></i>ربط خرائط جوجل والوصول السريع للعنوان</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-neon-emerald ml-2"></i>سرعة فائقة ومتوافقة كلياً مع الجوالات</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-management" class="tab-content hidden transition-all duration-300">
+                <div class="mb-6 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white flex items-center">
+                            <i class="fa-solid fa-clock-rotate-left text-neon-emerald ml-3"></i>
+                            2) توفير الوقت وتسهيل العمل الإداري
+                        </h2>
+                        <p class="text-gray-400 text-sm mt-1">تقليل الاتصالات والمراجعات اليدوية وتحويل المهام التكرارية إلى نظام إلكتروني سلس</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-lg bg-neon-emerald/10 text-neon-emerald border border-neon-emerald/30 flex items-center justify-center text-lg mb-4">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+                            <h3 class="font-bold text-white text-lg mb-2">لوحة الإعلانات المركزية</h3>
+                            <p class="text-gray-300 text-xs leading-relaxed">
+                                نشر الإجازات، المواعيد الهامة، وجداول الامتحانات بضغطة زر واحدة لتصل لجميع الأهالي دون الحاجة لطباعة أوراق.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-lg bg-brand-500/10 text-brand-500 border border-brand-500/30 flex items-center justify-center text-lg mb-4">
+                                <i class="fa-solid fa-user-plus"></i>
+                            </div>
+                            <h3 class="font-bold text-white text-lg mb-2">بوابة التوظيف المباشرة</h3>
+                            <p class="text-gray-300 text-xs leading-relaxed">
+                                استلام طلبات توظيف المعلمين والاداريين وتصنيف سيرهم الذاتية إلكترونياً لتسهيل اختيار الكفاءات عند الحاجة.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-lg bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30 flex items-center justify-center text-lg mb-4">
+                                <i class="fa-solid fa-circle-question"></i>
+                            </div>
+                            <h3 class="font-bold text-white text-lg mb-2">قسم الأسئلة الشائعة (FAQ)</h3>
+                            <p class="text-gray-300 text-xs leading-relaxed">
+                                إجابات جاهزة عن الرسوم، مواعيد الدوام، الزي المدرسي، والمواصلات لتقليل الاتصالات الهاتفية المكررة بالإدارة.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-lg bg-neon-purple/10 text-neon-purple border border-neon-purple/30 flex items-center justify-center text-lg mb-4">
+                                <i class="fa-solid fa-language"></i>
+                            </div>
+                            <h3 class="font-bold text-white text-lg mb-2">دعم متعدد اللغات</h3>
+                            <p class="text-gray-300 text-xs leading-relaxed">
+                                إمكانية تصفح الموقع باللغتين العربية والإنجليزي لعرض صورة عالمية واحترافية أمام المانحين وأولياء الأمور.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-portal" class="tab-content hidden transition-all duration-300">
+                <div class="mb-6 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white flex items-center">
+                            <i class="fa-solid fa-user-graduate text-neon-purple ml-3"></i>
+                            3) بوابة الطلاب وأولياء الأمور
+                        </h2>
+                        <p class="text-gray-400 text-sm mt-1">تواصل مستمر وبناء شراكة حقيقية بين البيت والمدرسة عبر حساب خاص لكل طالب</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-card p-6 rounded-2xl border-t-2 border-t-neon-purple">
+                        <div class="text-3xl text-neon-purple mb-4"><i class="fa-solid fa-chart-line"></i></div>
+                        <h3 class="text-lg font-bold text-white mb-2">متابعة الدرجات والحضور</h3>
+                        <p class="text-gray-300 text-sm mb-4 leading-relaxed">
+                            اطلاع ولي الأمر فوراً على نتائج الشهادات الشهريّة، وتنبيهات الغياب والتأخير بكل شفافية.
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl border-t-2 border-t-brand-500">
+                        <div class="text-3xl text-brand-500 mb-4"><i class="fa-solid fa-book-open"></i></div>
+                        <h3 class="text-lg font-bold text-white mb-2">الواجبات والخطط الأسبوعية</h3>
+                        <p class="text-gray-300 text-sm mb-4 leading-relaxed">
+                            تحميل الجداول الدراسية، الخطة الأسبوعية، والمواد التعليمية المساعدة بصيغة PDF بمرونة عالية.
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl border-t-2 border-t-neon-emerald">
+                        <div class="text-3xl text-neon-emerald mb-4"><i class="fa-solid fa-credit-card"></i></div>
+                        <h3 class="text-lg font-bold text-white mb-2">الدفع الإلكتروني للرسوم</h3>
+                        <p class="text-gray-300 text-sm mb-4 leading-relaxed">
+                            إمكانية تسديد الاقساط المدرسية وباصات المواصلات أونلاين وإصدار الفواتير التلقائية بسهولة.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-comparison" class="tab-content hidden transition-all duration-300">
+                <div class="mb-6 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white flex items-center">
+                            <i class="fa-solid fa-scale-balanced text-neon-amber ml-3"></i>
+                            4) مقارنة بين الوضع الحالي والحل الرقمي المقترح
+                        </h2>
+                        <p class="text-gray-400 text-sm mt-1">توضيح الفارق العملي بين الطرق التقليدية السابقة والنظام الحديث</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl overflow-hidden border border-gray-800">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right text-sm text-gray-300">
+                            <thead class="bg-gray-900/90 text-gray-200 font-bold border-b border-gray-800">
+                                <tr>
+                                    <th class="p-4">مجال العمل</th>
+                                    <th class="p-4 text-red-400"><i class="fa-solid fa-triangle-exclamation ml-2"></i>بدون موقع / الطرق التقليدية</th>
+                                    <th class="p-4 text-neon-emerald"><i class="fa-solid fa-wand-magic-sparkles ml-2"></i>مع المنصة الرقمية الجديدة</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-800/60">
+                                <tr class="hover:bg-gray-800/30 transition">
+                                    <td class="p-4 font-semibold text-white">التسجيل والقبول</td>
+                                    <td class="p-4 text-gray-400">طوابير وازدحام في السكرتاريا وتعبئة نماذج ورقية قد تضيع.</td>
+                                    <td class="p-4 text-neon-emerald font-medium">تقديم إلكتروني 24/7 وأرشفة تلقائية فورية لكل طلبات التسجيل.</td>
+                                </tr>
+                                <tr class="hover:bg-gray-800/30 transition">
+                                    <td class="p-4 font-semibold text-white">الإعلانات والمستجدات</td>
+                                    <td class="p-4 text-gray-400">طباعة أوراق وإرسالها مع الطلاب (غالبًا لا تصل لولي الأمر).</td>
+                                    <td class="p-4 text-neon-emerald font-medium">نشر فوري للقرارات والإعلانات مع تنبيهات سريعة.</td>
+                                </tr>
+                                <tr class="hover:bg-gray-800/30 transition">
+                                    <td class="p-4 font-semibold text-white">انطباع وجذب الأهالي</td>
+                                    <td class="p-4 text-gray-400">صورة تقليدية قد تعطي انطباعاً بعدم مواكبة التكنولوجيا.</td>
+                                    <td class="p-4 text-neon-emerald font-medium">صورة مؤسسية حديثة وبراقة تعكس تميز وجودة التعليم بالمدرسة.</td>
+                                </tr>
+                                <tr class="hover:bg-gray-800/30 transition">
+                                    <td class="p-4 font-semibold text-white">متابعة تحصيل الطالب</td>
+                                    <td class="p-4 text-gray-400">الانتظار حتى نهاية الفصل أو الحضور الشخصي للمدرسة.</td>
+                                    <td class="p-4 text-neon-emerald font-medium">متابعة أولاً بأول للعلامات والواجبات والسلوك عبر البوابة.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-plan" class="tab-content hidden transition-all duration-300">
+                <div class="mb-6 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white flex items-center">
+                            <i class="fa-solid fa-list-check text-brand-500 ml-3"></i>
+                            5) خطة التنفيذ والعرض المقترح
+                        </h2>
+                        <p class="text-gray-400 text-sm mt-1">تدرج مدروس للتنفيذ لضمان سهولة الاستخدام بأعلى جودة برمجية</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <!-- Phase 1 -->
+                    <div class="glass-panel p-6 rounded-2xl relative border-r-4 border-r-neon-cyan">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30 text-xs font-bold px-3 py-1 rounded-full">المرحلة الأولى</span>
+                            <span class="text-gray-400 text-xs"><i class="fa-regular fa-clock ml-1"></i>خلال 2-3 أسابيع</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">الموقع الواجهة والتسجيل (Public Website)</h3>
+                        <p class="text-gray-300 text-sm mb-4">تركيز كامل على الهوية البصرية وجذب الطلاب وتسهيل القبول:</p>
+                        <ul class="space-y-2 text-xs text-gray-300">
+                            <li class="flex items-center"><i class="fa-solid fa-circle-check text-neon-cyan ml-2"></i>تصميم الواجهة الرئيسية والتعريف بالمدرسة</li>
+                            <li class="flex items-center"><i class="fa-solid fa-circle-check text-neon-cyan ml-2"></i>نظام التسجيل الإلكتروني المباشر</li>
+                            <li class="flex items-center"><i class="fa-solid fa-circle-check text-neon-cyan ml-2"></i>معرض الصور والفعاليات والأسئلة الشائعة</li>
+                            <li class="flex items-center"><i class="fa-solid fa-circle-check text-neon-cyan ml-2"></i>ربط أزرار الواتساب المباشرة والتواصل</li>
+                        </ul>
+                    </div>
+
+                    <!-- Phase 2 -->
+                    <div class="glass-panel p-6 rounded-2xl relative border-r-4 border-r-neon-purple">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-neon-purple/10 text-neon-purple border border-neon-purple/30 text-xs font-bold px-3 py-1 rounded-full">المرحلة الثانية (اختياري)</span>
+                            <span class="text-gray-400 text-xs"><i class="fa-regular fa-clock ml-1"></i>حسب رغبة الإدارة</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">بوابة الطلاب والأنظمة المتقدمة (Portal)</h3>
+                        <p class="text-gray-300 text-sm mb-4">توسعة النظام ليشمل بوابات خاصة وميزات تفاعلية:</p>
+                        <ul class="space-y-2 text-xs text-gray-300">
+                            <li class="flex items-center"><i class="fa-solid fa-circle-check text-neon-purple ml-2"></i>حسابات خاصة لكل طالب وولي أمر</li>
+                            <li class="flex items-center"><i class="fa-solid fa-circle-check text-neon-purple ml-2"></i>رفع العلامات اليومية والشهرية والواجبات</li>
+                            <li class="flex items-center"><i class="fa-solid fa-circle-check text-neon-purple ml-2"></i>نظام الدفع الإلكتروني والتقارير المتقدمة</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Call to Action Card -->
+                <div class="glass-card p-6 rounded-2xl text-center bg-gradient-to-r from-brand-900/40 via-gray-900/80 to-brand-900/40 border border-brand-500/30">
+                    <h3 class="text-xl font-bold text-white mb-2">جاهزون لبدء تجربة ديمو (Demo) مخصصة لمدرستكم</h3>
+                    <p class="text-gray-300 text-sm max-w-2xl mx-auto mb-6">
+                        يمكننا تجهيز نموذج أولي سريع (Demo) يعكس هوية مدرستكم وشعارها خلال أيام قليلة لتجربته مع الكادر الإداري قبل الاعتماد النهائي.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <a href="https://mohammed-hindi.github.io/portfolio" target="_blank" class="bg-gradient-to-r from-brand-600 to-neon-cyan hover:opacity-90 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg text-sm flex items-center">
+                            <i class="fa-solid fa-laptop-code ml-2"></i>استعراض نماذج الأعمال السابقة
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <footer class="relative z-10 glass-panel border-t border-gray-800/80 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center sm:flex sm:justify-between sm:items-center text-xs text-gray-400">
+            <p>تم إعداد هذا العرض التقديمي بواسطة <span class="text-white font-semibold">م. محمد الهندي</span> - مطور مواقع متكامل (Laravel & Vue.js)</p>
+            <p class="mt-2 sm:mt-0">
+                <a href="https://mohammed-hindi.github.io/portfolio" target="_blank" class="text-brand-500 hover:underline">https://mohammed-hindi.github.io/portfolio</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // Remove active classes from Desktop buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white', 'shadow-md');
+                btn.classList.add('text-gray-400', 'hover:text-white', 'hover:bg-gray-800/50');
+            });
+
+            // Remove active classes from Mobile buttons
+            const mobButtons = document.querySelectorAll('.mob-nav-btn');
+            mobButtons.forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('text-gray-400', 'bg-gray-800');
+            });
+
+            // Show current content
+            const activeContent = document.getElementById('content-' + tabId);
+            if (activeContent) {
+                activeContent.classList.remove('hidden');
+            }
+
+            // Highlight active Desktop button
+            const activeNavBtn = document.getElementById('tab-' + tabId);
+            if (activeNavBtn) {
+                activeNavBtn.classList.remove('text-gray-400', 'hover:text-white', 'hover:bg-gray-800/50');
+                activeNavBtn.classList.add('bg-brand-600', 'text-white', 'shadow-md');
+            }
+
+            // Highlight active Mobile button
+            const activeMobBtn = document.getElementById('mob-tab-' + tabId);
+            if (activeMobBtn) {
+                activeMobBtn.classList.remove('text-gray-400', 'bg-gray-800');
+                activeMobBtn.classList.add('bg-brand-600', 'text-white');
+            }
+        }
+    </script>
+</body>
+</html>
